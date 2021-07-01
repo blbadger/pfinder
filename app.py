@@ -20,7 +20,7 @@ from dash.exceptions import PreventUpdate
 from redis import Redis
 from rq import Queue
 from CalculateFaster import OptiCalculate
-import rootmethod
+from rootmethod import newton, halley, secant
 
 # import connection from worker.py
 from worker import conn 
@@ -346,13 +346,13 @@ def display_juliaset(equation, rbounds, ibounds, colormap_value, steps_value, me
 	cmap = colormap_value
 
 	if method == "Newton's":
-		method = rootmethod.newton
+		method = newton
 
 	elif method == "Halley's":
-		method = rootmethod.halley
+		method = halley
 
 	else:
-		method = rootmethod.secant
+		method = secant
 
 	# send job to redis queue
 	q.enqueue(method, equation, max_iterations, x_range, y_range, res_value, cmap,
@@ -375,12 +375,22 @@ def reset_clicks(img):
 def display_equation(equation):
 	# convert equation to markdown and display
 	final_string = ''
-	# for i in range(len(equation)):
-	# 	if equation[i] == '^':
-	# 	final_string += '{'
-	# 	while 
+	i = 0
+	while i in range(len(equation)):
+		if equation[i] == '^':
+			final_string += '^{'
+			j = 0
+			i += 1
+			while equation[i+j] in '01234567890.':
+				final_string += equation[i+j]
+				j += 1
+			final_string += '}'
+			i = i + j
+		else:
+			final_string += equation[i]
+			i += 1
 
-	return f"\(  {equation} \)"
+	return f"\(  {final_string} \)"
 	
 
 @app.callback(
@@ -404,7 +414,7 @@ def disable_interval(img):
 
 # run the app in the cloud
 if __name__ == '__main__':
-	app.run_server(debug=True, port=8004)
+	app.run_server(debug=True, port=8003)
 	# app.run_server(debug=True, host='0.0.0.0')
 
 
