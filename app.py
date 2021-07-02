@@ -75,7 +75,6 @@ colormaps = [
 			'gist_ncar'
 			]
 
-resolutions = ['900 by 600', '1200 by 800', '1500 by 1000', '1800 by 1200']
 methods = ["Newton's", "Halley's", "Secant"]
 
 # page layout and inputs specified
@@ -89,7 +88,7 @@ app.layout = html.Div(
 		style={
 			'textAlign': 'center',
 			'color': colors['text'],
-			'margin-bottom': '3vh',
+			'margin-bottom': '1vh',
 			'margin-top': '1vh'
 		}
 	),
@@ -98,15 +97,15 @@ app.layout = html.Div(
 	html.Div(
 		children=[
 		html.H4(
-			children='Polynomial root-finding fractals',
+			children='Polynomial root finder',
 			style={
 				'textAlign': 'center',
 				'color': colors['text'],
 				'margin-bottom': '0vh',
 				'margin-top': '0vh',
 				'margin-left': '55vw',
-				'width': '28vw',
-				'height': '8vh',
+				'width': '40vw',
+				'height': '4vh',
 				'display': 'inline-block',
 				'vertical-align': 'top'
 			}
@@ -115,42 +114,22 @@ app.layout = html.Div(
 
 		html.Div(
 			children=[
-				html.Label('Specify Equation'),
-					dcc.Input(
-					id='equation',
-					type='text',
-					value='x^7.14-x-1',
-					style={'margin-top': '1vh',
-							'width': '12vw'})
-			], 
-			style={
-			'display':'inline-block',
-			'width': '13vw',
-			'margin-left': '3vw', 
-			'margin-right': '1vw',
-			'margin-top': '0vh',
-			'text-align': 'center',
-			'vertical-align':'top'
-		}),
-
-		html.Div(
-			children=[
 				html.Label('Real bounds'),
 					dcc.Input(
 					id='rbounds',
 					type='text',
-					value='-5, 5',
+					value='-1.2, 1.2',
 					style={'margin-top': '1vh',
 							'width': '14vw'})
 			], 
 			style={
 			'display':'inline-block',
 			'width': '14vw',
-			'margin-left': '1vw', 
-			'margin-right': '1vw',
+			'margin-left': '2vw', 
+			'margin-right': '2vw',
 			'margin-top': '0vh',
 			'text-align': 'center',
-			'vertical-align': 'top'
+			'vertical-align': 'bottom'
 		}),
 
 		html.Div(
@@ -159,7 +138,7 @@ app.layout = html.Div(
 					dcc.Input(
 					id='ibounds',
 					type='text',
-					value='-5, 5',
+					value='-1, 1',
 					style={'margin-top': '1vh',
 							'width': '14vw'})
 			], 
@@ -170,8 +149,31 @@ app.layout = html.Div(
 			'margin-right': '1vw',
 			'margin-top': '0vh',
 			'text-align': 'center',
-			'vertical-align': 'top'
+			'vertical-align': 'bottom'
 		}),
+
+
+		html.Div(
+			children=[
+			html.Label('Choose color map:'),
+				dcc.Dropdown(
+					id='colormap',
+					options=[{'value': x, 'label': x} 
+							 for x in colormaps],
+					value='inferno',
+					style={
+						'width': '14.5vw'})
+			],
+			style={
+			'display':'inline-block',
+			'width': '14.5vw',
+			'margin-left': '3vw', 
+			'margin-right': '0vw',
+			'margin-top': '2.5vh',
+			'text-align': 'top',
+			'vertical-align': 'bottom'
+		}),
+
 
 		html.Div(
 			children=[
@@ -191,7 +193,7 @@ app.layout = html.Div(
 			'margin-left':'2vw',
 			'padding-left': '1vw',
 			'margin-top': '2.5vh',
-			'vertical-align': 'top'
+			'vertical-align': 'bottom'
 		}),
 			
 
@@ -210,7 +212,7 @@ app.layout = html.Div(
 			style={
 			'display':'inline-block',
 			'width': '15vw',
-			'margin-left': '1vw', 
+			'margin-left': '2vw', 
 			'margin-right': '1vw',
 			'margin-top': '2.5vh',
 			'text-align': 'center',
@@ -220,31 +222,30 @@ app.layout = html.Div(
 		
 		html.Div(
 			children=[
-			html.Label('Choose color map:'),
-				dcc.Dropdown(
-					id='colormap',
-					options=[{'value': x, 'label': x} 
-							 for x in colormaps],
-					value='twilight',
-					style={
-						'width': '14.5vw'})
-			],
+				html.Label('Specify Equation'),
+					dcc.Input(
+					id='equation',
+					type='text',
+					value='x^7.14-x-1',
+					style={'margin-top': '1vh',
+							'width': '20vw'})
+			], 
 			style={
 			'display':'inline-block',
-			'width': '14.5vw',
-			'margin-left': '2.5vw', 
-			'margin-right': '0vw',
-			'margin-top': '2.5vh',
-			'text-align': 'top',
-			'vertical-align': 'top'
+			'width': '20vw',
+			'margin-left': '3vw', 
+			'margin-right': '1vw',
+			'margin-top': '2vh',
+			'text-align': 'center',
+			'vertical-align':'bottom'
 		}),
 
 		html.Button('Click to run', 
 			id='button', 
 			style={'display': 'inline-block',
-					'margin-left': '7vw',
+					'margin-left': '2vw',
 					'font-size': '1.4rem',
-					'margin-top': '4.5vh',
+					'margin-top': '2vh',
 					'vertical-align': 'bottom'}),
 		html.Div(
 			id='mathjax', 
@@ -252,8 +253,8 @@ app.layout = html.Div(
 				'textAlign': 'left',
 				'font-family': "Open Sans", # "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;', 
 				'font-weight': 'normal',
-				'margin-top': '0vh',
-				'margin-left': '2vw',
+				'margin-top': '2vh',
+				'margin-left': '3vw',
 				'font-size': '2.2rem',
 				'display': 'inline-block',
 				'margin-top': '4vh',
@@ -268,8 +269,8 @@ app.layout = html.Div(
 				'textAlign': 'left',
 				'font-family': "Open Sans", # "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;', 
 				'font-weight': 'normal',
-				'margin-top': '4vh',
-				'margin-left': '2vw',
+				'margin-top': '2vh',
+				'margin-left': '3vw',
 				'font-size': '2.2rem',
 				'display': 'inline-block',
 				'vertical-align': 'bottom'
@@ -287,7 +288,7 @@ app.layout = html.Div(
 			id='image',
 			style={'display': 'inline-block',
 					'width': '90vw',
-					'margin-left': '5vw',
+					'margin-left': '4vw',
 					'margin-top': '3vh'}),
 
 	dcc.Interval(id='trigger', interval=2000),
@@ -318,7 +319,6 @@ def update_redis(job, img, n_clicks):
 
 	# executes if redis job is complete
 	if job_current.result:
-		n_clicks = None
 		img = job_current.result
 		return img
 
@@ -341,8 +341,8 @@ def display_juliaset(equation, rbounds, ibounds, colormap_value, steps_value, me
 	# convert inputs to args and build array
 	max_iterations = steps_value
 	res_value = [1800, 1300]
-	x_range = res_value[0]
-	y_range = res_value[1]
+	x_range = [i for i in rbounds.split(',')]
+	y_range = [i for i in ibounds.split(',')]
 	cmap = colormap_value
 
 	if method == "Newton's":
@@ -354,9 +354,10 @@ def display_juliaset(equation, rbounds, ibounds, colormap_value, steps_value, me
 	else:
 		method = secant
 
-	# send job to redis queue
-	q.enqueue(method, equation, max_iterations, x_range, y_range, res_value, cmap,
-			ttl=1, failure_ttl=0.5, result_ttl=2, job_id='root_job')
+	# send job to redis queue if not already there
+	if not q.fetch_job('root_job'):
+		q.enqueue(method, equation, max_iterations, x_range, y_range, res_value, cmap,
+				ttl=1, failure_ttl=0.5, result_ttl=2, job_id='root_job')
 
 	return ''
 
@@ -367,7 +368,6 @@ def reset_clicks(img):
 		return None
 	else:
 		return 1
-
 
 @app.callback(
 	Output(component_id='mathjax', component_property='children'),
@@ -414,8 +414,8 @@ def disable_interval(img):
 
 # run the app in the cloud
 if __name__ == '__main__':
-	app.run_server(debug=True, port=8003)
-	# app.run_server(debug=True, host='0.0.0.0')
+	# app.run_server(debug=True, port=8004)
+	app.run_server(debug=True, host='0.0.0.0')
 
 
 
