@@ -52,8 +52,8 @@ app = dash.Dash(server=server,
 job = ''
 
 colors = {
-	'background': '#fffff',
-	'text': '#10110'
+	'background': '#10110',
+	'text': '#fffff'
 }
 
 colormaps = [
@@ -414,8 +414,8 @@ def disable_interval(img):
 
 # run the app in the cloud
 if __name__ == '__main__':
-	# app.run_server(debug=True, port=8004)
-	app.run_server(debug=True, host='0.0.0.0')
+	app.run_server(debug=True, port=8005)
+	# app.run_server(debug=True, host='0.0.0.0')
 
 
 
