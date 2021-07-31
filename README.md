@@ -9,4 +9,6 @@ submitting an equation (real values only at present) produces a high-resolution 
 
 ![cover](/assets/pfinder_cover.png)
 
+If this sort of thing iterests you, see also the Jenerator (https://github.com/blbadger/jenerator)
+
 
