@@ -4,6 +4,7 @@
 # import standard libraries
 import io
 import base64
+import bz2
 
 # import third-party libraries
 import numpy as np 
@@ -46,14 +47,14 @@ external_scripts = [
 server = flask.Flask(__name__)
 app = dash.Dash(server=server, 
 				title='Polynomial roots', 
-				external_stylesheets=external_stylesheets, 
+				# external_stylesheets=external_stylesheets, 
 				external_scripts=external_scripts)
 
 job = ''
 
 colors = {
-	'background': '#10110',
-	'text': '#fffff'
+	'background': '#1f1f1f',
+	'text': '#FFFFF'
 }
 
 colormaps = [
@@ -77,6 +78,8 @@ colormaps = [
 
 methods = ["Newton's", "Halley's", "Secant"]
 
+resolutions = ['1250 by 900', '1500 by 1100', '1800 by 1300', '2100 by 1400', '2400 by 1600']
+
 # page layout and inputs specified
 app.layout = html.Div(
 	style=
@@ -86,31 +89,35 @@ app.layout = html.Div(
 	html.H1(
 		children='Pfinder',
 		style={
+			'textAlign': 'right',
+			'display': 'inline-block',
+			'color': colors['text'],
+			'margin-bottom': '0vh',
+			'margin-top': '1vh',
+			'width': '55vw'
+		}
+	),
+
+	html.H4(
+		children='Polynomial root finder',
+		style={
 			'textAlign': 'center',
 			'color': colors['text'],
-			'margin-bottom': '1vh',
-			'margin-top': '1vh'
+			'margin-bottom': '0vh',
+			'vertical-align': 'bottom',
+			'padding-top': '4vh',
+			'margin-top': '0vh',
+			'margin-left': '5vw',
+			'width': '30vw',
+			'height': '4vh',
+			'display': 'inline-block',
+			'vertical-align': 'top'
 		}
 	),
 
 
 	html.Div(
 		children=[
-		html.H4(
-			children='Polynomial root finder',
-			style={
-				'textAlign': 'center',
-				'color': colors['text'],
-				'margin-bottom': '0vh',
-				'margin-top': '0vh',
-				'margin-left': '55vw',
-				'width': '40vw',
-				'height': '4vh',
-				'display': 'inline-block',
-				'vertical-align': 'top'
-			}
-		),
-		html.Br(),
 
 		html.Div(
 			children=[
@@ -118,18 +125,20 @@ app.layout = html.Div(
 					dcc.Input(
 					id='rbounds',
 					type='text',
-					value='-1.2, 1.2',
+					value='-1.3, 1.3',
 					style={'margin-top': '1vh',
-							'width': '14vw'})
+							'width': '14vw',
+							})
 			], 
 			style={
 			'display':'inline-block',
 			'width': '14vw',
-			'margin-left': '2vw', 
+			'margin-left': '4vw', 
 			'margin-right': '2vw',
 			'margin-top': '0vh',
 			'text-align': 'center',
-			'vertical-align': 'bottom'
+			'vertical-align': 'bottom',
+			'color': 'black'
 		}),
 
 		html.Div(
@@ -184,11 +193,12 @@ app.layout = html.Div(
 							 for x in methods],
 					value=methods[0],
 					style={
-						'width': '17vw'})
+						'width': '13vw',
+						'color': '#1f1f1f'})
 			],
 			style={
 			'display': 'inline-block',
-			'width': '17vw',
+			'width': '13vw',
 			'margin-right': '0vw',
 			'margin-left':'2vw',
 			'padding-left': '1vw',
@@ -196,6 +206,25 @@ app.layout = html.Div(
 			'vertical-align': 'bottom'
 		}),
 			
+		html.Div(
+			children=[
+			html.Label('Choose resolution:'),
+			dcc.Dropdown(
+					id='res',
+					options=[{'value': x, 'label': x} 
+							 for x in resolutions],
+					value=resolutions[0],
+					style={
+						'width': '16vw'})
+			],
+			style={
+			'display': 'inline-block',
+			'width': '16vw',
+			'margin-right': '0vw',
+			'margin-left':'2vw',
+			'padding-left': '1vw',
+			'margin-top': '4.5vh'
+		}),
 
 		html.Div(
 			children=[
@@ -203,23 +232,31 @@ app.layout = html.Div(
 				dcc.Input(
 				id='steps',
 				type='number',
-				value=40,
+				value=35,
 				min=0,
 				max=300,
-				style={'margin-top': '0vh',
+				style={
 						'width': '15vw'})
 			], 
 			style={
 			'display':'inline-block',
 			'width': '15vw',
-			'margin-left': '2vw', 
+			'margin-left': '8vw', 
 			'margin-right': '1vw',
 			'margin-top': '2.5vh',
 			'text-align': 'center',
-			'vertical-align': 'top'
+			'vertical-align': 'bottom'
 		}),
 
 		
+		html.Button('Click to run', 
+			id='button', 
+			style={'display': 'inline-block',
+					'margin-left': '2vw',
+					'font-size': '1.4rem',
+					'margin-top': '2vh',
+					'vertical-align': 'bottom'}),
+
 		html.Div(
 			children=[
 				html.Label('Specify Equation'),
@@ -240,13 +277,6 @@ app.layout = html.Div(
 			'vertical-align':'bottom'
 		}),
 
-		html.Button('Click to run', 
-			id='button', 
-			style={'display': 'inline-block',
-					'margin-left': '2vw',
-					'font-size': '1.4rem',
-					'margin-top': '2vh',
-					'vertical-align': 'bottom'}),
 		html.Div(
 			id='mathjax', 
 			style={
@@ -254,7 +284,7 @@ app.layout = html.Div(
 				'font-family': "Open Sans", # "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;', 
 				'font-weight': 'normal',
 				'margin-top': '2vh',
-				'margin-left': '3vw',
+				'margin-left': '2vw',
 				'font-size': '2.2rem',
 				'display': 'inline-block',
 				'margin-top': '4vh',
@@ -262,34 +292,38 @@ app.layout = html.Div(
 				'vertical-align': 'bottom'
 			}),
 
-
-		html.Div(
-			id='status', 
-			style={
-				'textAlign': 'left',
-				'font-family': "Open Sans", # "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;', 
-				'font-weight': 'normal',
-				'margin-top': '2vh',
-				'margin-left': '3vw',
-				'font-size': '2.2rem',
-				'display': 'inline-block',
-				'vertical-align': 'bottom'
-			})
 		],
 		style={
 			'display': 'inline-block',
 			'width': '90vw',
 			'margin-top': '0vh',
-			'vertical-align': 'top'
+			'vertical-align': 'top',
+			'margin-left': '0vw',
+			'horizontal-align': 'middle'
 		}
 	),
+
+	html.Div(
+				id='status', 
+				style={
+					'textAlign': 'center',
+					'font-family': "Open Sans", # "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;', 
+					'font-weight': 'normal',
+					'margin-top': '4vh',
+					'margin-left': '0vw',
+					'width': '95vw',
+					'font-size': '2.2rem',
+					'display': 'inline-block',
+					'vertical-align': 'bottom'
+				}),
 
 	html.Img(
 			id='image',
 			style={'display': 'inline-block',
 					'width': '90vw',
 					'margin-left': '4vw',
-					'margin-top': '3vh'}),
+					'margin-top': '4vh',
+					'margin-bottom': '4vh'}),
 
 	dcc.Interval(id='trigger', interval=2000),
 	# hidden div to store redis queue info
@@ -312,6 +346,7 @@ def update_redis(job, img, n_clicks):
 	# wait while img is generated
 	if q.count > 0:
 		return 
+
 	job_current = q.fetch_job('root_job')
 	
 	if not job_current:
@@ -330,17 +365,21 @@ def update_redis(job, img, n_clicks):
 			 Input(component_id='colormap', component_property='value'),
 			 Input(component_id='steps', component_property='value'),
 			 Input(component_id='method', component_property='value'),
-			 Input(component_id='button', component_property='n_clicks')
+			 Input(component_id='button', component_property='n_clicks'),
+			 Input(component_id='res', component_property='value')
 			])
-def display_juliaset(equation, rbounds, ibounds, colormap_value, steps_value, method, n_clicks):
+def display_pfinder(equation, rbounds, ibounds, colormap_value, steps_value, method, n_clicks, resolution):
 	if n_clicks is None:
 		raise PreventUpdate
+
 	# do not update if redis queue has items waiting
 	if q.count > 0:
 		return ''
+
 	# convert inputs to args and build array
 	max_iterations = steps_value
-	res_value = [1800, 1300]
+	res = [i for i in resolution.split(' ')]
+	res_value = [int(res[0]), int(res[2])]
 	x_range = [i for i in rbounds.split(',')]
 	y_range = [i for i in ibounds.split(',')]
 	cmap = colormap_value
@@ -403,6 +442,7 @@ def display_status(n_clicks):
 	else:
 		return ''
 
+
 @app.callback(Output('trigger', 'interval'),
               [Input('image', 'src')])
 def disable_interval(img):
@@ -414,8 +454,8 @@ def disable_interval(img):
 
 # run the app in the cloud
 if __name__ == '__main__':
-	app.run_server(debug=True, port=8005)
-	# app.run_server(debug=True, host='0.0.0.0')
+	# app.run_server(debug=True, port=8021)
+	app.run_server(debug=True, host='0.0.0.0')
 
 
 

@@ -14,8 +14,8 @@ plt.style.use('dark_background')
 
 
 def newton(equation, max_iterations, x_range, y_range, res_value, cmap):
-	y, x = np.ogrid[float(y_range[1]): float(y_range[0]): 1300*1j, \
-					float(x_range[0]): float(x_range[1]): 1800*1j]
+	y, x = np.ogrid[float(y_range[1]): float(y_range[0]): res_value[1]*1j, \
+					float(x_range[0]): float(x_range[1]): res_value[0]*1j]
 	z_array = x + y*1j
 
 	iterations_until_rooted = max_iterations + np.zeros(z_array.shape)
@@ -33,17 +33,19 @@ def newton(equation, max_iterations, x_range, y_range, res_value, cmap):
 		found_root = (abs(z_array - previous_z_array) < 0.0000001) & not_already_at_root
 		iterations_until_rooted[found_root] = i
 		not_already_at_root = np.invert(found_root) & not_already_at_root
-
+		
 	arr = iterations_until_rooted
 	buf = io.BytesIO()
 	plt.imsave(buf, arr, cmap=cmap, format='png')
 	data = base64.b64encode(buf.getbuffer()).decode("utf8") 
 	return "data:image/png;base64,{}".format(data)
 
+	
+
 
 def halley(equation, max_iterations, x_range, y_range, res_value, cmap):
-	y, x = np.ogrid[float(y_range[1]): float(y_range[0]): 1300*1j, \
-					float(x_range[0]): float(x_range[1]): 1800*1j]
+	y, x = np.ogrid[float(y_range[1]): float(y_range[0]): res_value[1]*1j, \
+					float(x_range[0]): float(x_range[1]): res_value[0]*1j]
 	z_array = x + y*1j
 
 	iterations_until_rooted = max_iterations + np.zeros(z_array.shape)
@@ -78,8 +80,8 @@ def halley(equation, max_iterations, x_range, y_range, res_value, cmap):
 
 
 def secant(equation, max_iterations, x_range, y_range, res_value, cmap):
-	y, x = np.ogrid[float(y_range[1]): float(y_range[0]): 1300*1j, \
-					float(x_range[0]): float(x_range[1]): 1800*1j]
+	y, x = np.ogrid[float(y_range[1]): float(y_range[0]): res_value[1]*1j, \
+					float(x_range[0]): float(x_range[1]): res_value[0]*1j]
 	z_array = x + y*1j
 	iterations_until_rooted = max_iterations + np.zeros(z_array.shape)
 
