@@ -21,7 +21,7 @@ from dash.exceptions import PreventUpdate
 from redis import Redis
 from rq import Queue
 from CalculateFaster import OptiCalculate
-from rootmethod import newton, halley, secant
+from rootmethod import newton, halley, secant, newton_optimized, halley_optimized, secant_optimized
 
 # import connection from worker.py
 from worker import conn 
@@ -99,10 +99,10 @@ app.layout = html.Div(
 	),
 
 	html.H4(
-		children='Polynomial root finder',
+		children=html.A('Polynomial root finder', href='https://blbadger.github.io/polynomial-roots.html'),
 		style={
 			'textAlign': 'center',
-			'color': colors['text'],
+			'color': '#add8e6',
 			'margin-bottom': '0vh',
 			'vertical-align': 'bottom',
 			'padding-top': '4vh',
@@ -125,7 +125,7 @@ app.layout = html.Div(
 					dcc.Input(
 					id='rbounds',
 					type='text',
-					value='-1.3, 1.3',
+					value='-1.4, 1.4',
 					style={'margin-top': '1vh',
 							'width': '14vw',
 							})
@@ -384,14 +384,25 @@ def display_pfinder(equation, rbounds, ibounds, colormap_value, steps_value, met
 	y_range = [i for i in ibounds.split(',')]
 	cmap = colormap_value
 
-	if method == "Newton's":
-		method = newton
+	if 'i' in equation and '(' in equation:
+		if method == "Newton's":
+			method = newton
 
-	elif method == "Halley's":
-		method = halley
+		elif method == "Halley's":
+			method = halley
+
+		else:
+			method = secant
 
 	else:
-		method = secant
+		if method == "Newton's":
+			method = newton_optimized
+
+		elif method == "Halley's":
+			method = halley_optimized
+
+		else:
+			method = secant_optimized
 
 	# send job to redis queue if not already there
 	if not q.fetch_job('root_job'):
@@ -407,6 +418,7 @@ def reset_clicks(img):
 		return None
 	else:
 		return 1
+
 
 @app.callback(
 	Output(component_id='mathjax', component_property='children'),
