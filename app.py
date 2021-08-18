@@ -99,7 +99,7 @@ app.layout = html.Div(
 	),
 
 	html.H4(
-		children=html.A('Polynomial root finder', href='https://blbadger.github.io/polynomial-roots.html'),
+		children=html.A('Polynomial root finder', href='https://github.com/blbadger/pfinder'),
 		style={
 			'textAlign': 'center',
 			'color': '#add8e6',
@@ -429,14 +429,26 @@ def display_equation(equation):
 	i = 0
 	while i in range(len(equation)):
 		if equation[i] == '^':
-			final_string += '^{'
-			j = 0
-			i += 1
-			while equation[i+j] in '01234567890.':
-				final_string += equation[i+j]
-				j += 1
-			final_string += '}'
-			i = i + j
+			if equation[i+1] == '(':
+				final_string += '^{'
+				j = 0
+				i += 1
+				while equation[i+j] != ')' and i + j < len(equation)-1:
+					final_string += equation[i+j]
+					j += 1
+				final_string += ')}'
+				i = i + j + 1
+
+			else:
+				final_string += '^{'
+				j = 0
+				i += 1
+				while equation[i+j] in 'i01234567890.':
+					final_string += equation[i+j]
+					j += 1
+				final_string += '}'
+				i = i + j
+
 		else:
 			final_string += equation[i]
 			i += 1
