@@ -24,7 +24,7 @@ Complex-valued constants and exponents are now supported as well, for example:
 
 `x^(7.11+0.1i)-x-(1-0.2i)`
 
-Complex numbers may be entered with or without real values, ie `(2i)` is acceptable alternative to `(0+2i)`, but all complex or negative contants and exponents must exist in single parentheses.
+Complex numbers may be entered with or without real values, ie `(2i)` is acceptable alternative to `(0+2i)`, but all complex or negative contants and exponents must exist in single parentheses.  Note also complex-numbered equation inputs will lead to longer computations than real-valued equations.
 
 
 ### Behind the scenes
