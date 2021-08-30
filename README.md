@@ -6,11 +6,11 @@ The Pfinder generates fractals with polynomial root-finding methods that color t
 
 ![screenshot](/assets/pfinder_screenshot.png)
 
-`Real Bounds` and `Imaginary Bounds` specify the location of the horizontal and vertical axes, respectively, in the complex plane: for example, imaginary bounds `-1, 1` results in an image generated for values between $-i$ (at the bottom of the map) and $i$ (top).  Inputs may or may not contain spaces, but must have a single comma `,` between boundary elements, and the first element must be less than the second.
+`Real Bounds` and `Imaginary Bounds` specify the location of the horizontal and vertical axes, respectively, in the complex plane: for example, imaginary bounds `-1, 1` results in an image generated for values between `-i` (at the bottom of the map) and `i` (top).  Inputs may or may not contain spaces, but must have a single comma `,` between boundary elements, and the first element must be less than the second.
 
 The `Choose color map:` dropdown specify the colors assigned to the array of the number of iterations before arriving at a root.  The`Choose resolution:` dropdown menu specifies two integers, which are the number of values calculated between the `Real Bounds` and the `Imaginary Bounds`, respectively. There are approximately equal to the resolution of the image produced.
 
-Any of Newton's method, Halley's method, or the Secant method (with the initial guess plotted and the second guess being half way between the origin $(0, 0)$ and the first guess) can be selected in the `Choose method:` dropdown.
+Any of Newton's method, Halley's method, or the Secant method (with the initial guess plotted and the second guess being half way between the origin `0 + 0i` and the first guess) can be selected in the `Choose method:` dropdown.
 
 The `Maximum iterations` input selection field records the maximum number of iterations of the root method before the programs halts, and can be fed any value between `0` and `300`.  Roughly speaking, more iterations are required for higher resolution images.  Note that the different root methods require different iterations to make interesting maps, with the Secant method requiring the most and Halley's the fewest.
 
