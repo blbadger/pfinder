@@ -262,7 +262,7 @@ app.layout = html.Div(
 					dcc.Input(
 					id='equation',
 					type='text',
-					value='x^7.14-x-1',
+					value='x^7-x-1',
 					style={'margin-top': '1vh',
 							'width': '20vw'})
 			], 
