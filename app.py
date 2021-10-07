@@ -1,5 +1,4 @@
 # app.py
-# Responsive dashboard for exploring Julia sets
 
 # import standard libraries
 import io

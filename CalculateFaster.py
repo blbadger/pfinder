@@ -11,14 +11,14 @@ class OptiCalculate(Calculate):
 	and bytecode optimization via numexpr.  Inherits from 'Calculate'.
 	'''
 
-	def __init__(self, equation, point, differentiate):
-		super().__init__(equation, point, differentiate)
+	def __init__(self, equation, differentiate):
+		super(OptiCalculate, self).__init__(equation, differentiate)
 
-	def evaluate(self):
+	def evaluate(self, point):
 		'''
 		Evaluate expression using numexpr
 		'''
-		point = self.point
+
 		if self.diff:
 			ls = self.differentiate()
 		else:
