@@ -96,7 +96,7 @@ def halley(equation, max_iterations, x_range, y_range, res_value, cmap):
 	diff = ComplexCalculate(equation, differentiate=True)
 
 	# double derivative initialization
-	diff_stirng = diff.to_string()
+	diff_string = diff.to_string()
 	double_diff = ComplexCalculate(diff_string, differentiate=True)
 
 
@@ -134,7 +134,7 @@ def halley_optimized(equation, max_iterations, x_range, y_range, res_value, cmap
 	diff = OptiCalculate(equation, differentiate=True)
 
 	# double derivative initialization
-	diff_stirng = diff.to_string()
+	diff_string = diff.to_string()
 	double_diff = OptiCalculate(diff_string, differentiate=True)
 
 

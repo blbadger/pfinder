@@ -51,32 +51,3 @@ class OptiCalculate(Calculate):
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
