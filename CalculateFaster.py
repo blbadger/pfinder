@@ -3,8 +3,9 @@
 # import third party libraries
 import numexpr as ne
 from Calculate import Calculate
+from RealCalculate import RealCalculate
 
-class OptiCalculate(Calculate):
+class OptiCalculate(RealCalculate):
 	'''
 	Parses, differentiates, and evalutes polynomial expression for
 	root finding algorithms.  Multithreading accross CPU cores

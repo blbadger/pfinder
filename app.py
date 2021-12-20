@@ -262,7 +262,7 @@ app.layout = html.Div(
 					dcc.Input(
 					id='equation',
 					type='text',
-					value='x^7-x-1',
+					value='x^7.14-x-1',
 					style={'margin-top': '1vh',
 							'width': '20vw'})
 			], 
@@ -477,8 +477,8 @@ def disable_interval(img):
 
 # run the app in the cloud
 if __name__ == '__main__':
-	app.run_server(debug=True, port=8022)
-	# app.run_server(debug=True, host='0.0.0.0')
+	# app.run_server(debug=True, port=8022)
+	app.run_server(debug=True, host='0.0.0.0')
 
 
 

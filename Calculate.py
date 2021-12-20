@@ -15,12 +15,11 @@ class Calculate:
 		Iterative parser to prepare a polynomial string for evaluation or 
 		differentiation. Assumes that negative-value or complex exponents 
 		are contained in parentheses.
-
 		Args:
 			None
 
 		Returns:
-			ls: arr[str or int or np.complex], parsed expression
+			ls: arr[str, int, np.complex], parsed expression
 		
 		"""
 
@@ -81,13 +80,11 @@ class Calculate:
 		"""
 		Converts a list of components of a differentiated
 		expression into a string.
-
 		Args:
 			None
 
 		Returns:
 			expression: str representing equation in ls
-
 		"""
 
 		if self.diff:
@@ -104,7 +101,6 @@ class Calculate:
 		"""
 		Finds the derivative of a given function 'equation'. 
 		Accepts any polynomial with positive exponent values.
-
 		Args:
 			None (accesses self.equation via self.parse())
 
@@ -157,14 +153,12 @@ class Calculate:
 		Computes the value of an equation for array `point`. Usually 
 		a numpy ogrid, in which case the derivative is computed at each
 		point on the grid. 
-
 		Args:
 			point: np.ogrid(np.complex), 2D ogrid of interest
-
+			
 		Returns:
 			total: np.ogrid(complex) resulting from evaluating every
 				   value in point
-
 		"""
 
 		if self.diff:
@@ -212,10 +206,9 @@ class Calculate:
 				start = block[0] * point ** block[-1]
 				total += start
 
-		return total
+		return 
 
 
 
 
 
-		
