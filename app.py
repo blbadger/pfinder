@@ -231,7 +231,7 @@ app.layout = html.Div(
 				dcc.Input(
 				id='steps',
 				type='number',
-				value=35,
+				value=40,
 				min=0,
 				max=300,
 				style={
@@ -262,7 +262,7 @@ app.layout = html.Div(
 					dcc.Input(
 					id='equation',
 					type='text',
-					value='x^7.14-x-1',
+					value='x^7-x-1',
 					style={'margin-top': '1vh',
 							'width': '20vw'})
 			], 
