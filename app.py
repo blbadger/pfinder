@@ -325,14 +325,16 @@ app.layout = html.Div(
 					'margin-bottom': '4vh'}),
 
 	dcc.Interval(id='trigger', interval=2000),
-	# hidden div to store redis queue info
+	# hidden divs to store redis queue info and root values
 	html.Div(id='job', style={'display': 'none'}, children=dcc.Store(job)),
+	html.Div(id='root_values', style={'display': 'none'}, children=dcc.Store(job))
 
 ])
 
 # responsive callbacks ('component_id' etc are not strictly necessary but 
 # are included for clarity)
-@app.callback(Output(component_id='image', component_property='src'),
+@app.callback([Output(component_id='image', component_property='src'),
+			Output(component_id='root_values', component_property='value')],
 			[Input(component_id='job', component_property='children'),
 			Input(component_id='trigger', component_property='n_intervals'),
 			Input(component_id='button', component_property='n_clicks')
@@ -353,8 +355,8 @@ def update_redis(job, img, n_clicks):
 
 	# executes if redis job is complete
 	if job_current.result:
-		img = job_current.result
-		return img
+		img, roots = job_current.result
+		return img, roots
 
 
 @app.callback(Output(component_id='job', component_property='children'),
@@ -457,13 +459,22 @@ def display_equation(equation):
 
 @app.callback(
 	Output(component_id='status', component_property='children'),
-	[Input(component_id='button', component_property='n_clicks')])
-def display_status(n_clicks):
+	[Input(component_id='button', component_property='n_clicks'),
+	Input(component_id='root_values', component_property='value')])
+def display_status(n_clicks, root_values):
 	# show program status
 	if n_clicks:
 		return 'Running...'
-	else:
-		return ''
+	
+	# return the root values
+	root_string = 'Roots found: '
+	for char in roots[1:-1]:
+		if char != 'j':
+			root_string += char
+		else:
+			root_string += 'i'
+
+	return root_string
 
 
 @app.callback(Output('trigger', 'interval'),
@@ -477,7 +488,7 @@ def disable_interval(img):
 
 # run the app in the cloud
 if __name__ == '__main__':
-	# app.run_server(debug=True, port=8022)
+	# app.run_server(debug=True, port=8001)
 	app.run_server(debug=True, host='0.0.0.0')
 
 
