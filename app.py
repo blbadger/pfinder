@@ -231,7 +231,7 @@ app.layout = html.Div(
 				dcc.Input(
 				id='steps',
 				type='number',
-				value=40,
+				value=35,
 				min=0,
 				max=300,
 				style={
