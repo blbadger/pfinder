@@ -63,7 +63,9 @@ def newton(equation, max_iterations, x_range, y_range, res_value, cmap):
 		not_already_at_root = np.invert(found_root) & not_already_at_root
 		
 	arr = iterations_until_rooted
-	return convert_to_binary(arr, cmap)
+	bin_arr = convert_to_binary(arr, cmap)
+	roots = return_roots(z_array, not_already_at_root)
+	return bin_arr, roots
 
 
 

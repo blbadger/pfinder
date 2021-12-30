@@ -325,9 +325,10 @@ app.layout = html.Div(
 					'margin-bottom': '4vh'}),
 
 	dcc.Interval(id='trigger', interval=2000),
+	
 	# hidden divs to store redis queue info and root values
 	html.Div(id='job', style={'display': 'none'}, children=dcc.Store(job)),
-	html.Div(id='root_values', style={'display': 'none'}, children=dcc.Store(job))
+	html.Div(id='root_values', style={'display': 'none'}, children=dcc.Store(root_values))
 
 ])
 
@@ -468,7 +469,7 @@ def display_status(n_clicks, root_values):
 	
 	# return the root values
 	root_string = 'Roots found: '
-	for char in roots[1:-1]:
+	for char in root_values[1:-1]:
 		if char != 'j':
 			root_string += char
 		else:
