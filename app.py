@@ -325,10 +325,10 @@ app.layout = html.Div(
 					'margin-bottom': '4vh'}),
 
 	dcc.Interval(id='trigger', interval=2000),
-	
+
 	# hidden divs to store redis queue info and root values
 	html.Div(id='job', style={'display': 'none'}, children=dcc.Store(job)),
-	html.Div(id='root_values', style={'display': 'none'}, children=dcc.Store(root_values))
+	html.Div(id='root_values', style={'display': 'none'}, children=dcc.Store(job))
 
 ])
 
