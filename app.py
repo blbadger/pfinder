@@ -231,7 +231,7 @@ app.layout = html.Div(
 				dcc.Input(
 				id='steps',
 				type='number',
-				value=40,
+				value=35,
 				min=0,
 				max=300,
 				style={
@@ -316,45 +316,78 @@ app.layout = html.Div(
 					'vertical-align': 'bottom'
 				}),
 
+	html.Div(
+				id='roots', 
+				style={
+					'textAlign': 'center',
+					'font-family': "Open Sans", # "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;', 
+					'font-weight': 'normal',
+					'margin-top': '1vh',
+					'margin-left': '0vw',
+					'width': '95vw',
+					'font-size': '2.2rem',
+					'display': 'inline-block',
+					'vertical-align': 'bottom'
+				}),
+
 	html.Img(
-			id='image',
-			style={'display': 'inline-block',
-					'width': '90vw',
-					'margin-left': '4vw',
-					'margin-top': '4vh',
-					'margin-bottom': '4vh'}),
+				id='image',
+				style={'display': 'inline-block',
+						'width': '90vw',
+						'margin-left': '4vw',
+						'margin-top': '4vh',
+						'margin-bottom': '4vh'}),
+
+
 
 	dcc.Interval(id='trigger', interval=2000),
-	# hidden div to store redis queue info
-	html.Div(id='job', style={'display': 'none'}, children=dcc.Store(job)),
 
+	# hidden div to store redis queue info
+	html.Div(id='job', style={'display': 'none'}, children=dcc.Store(job))
 ])
 
-# responsive callbacks ('component_id' etc are not strictly necessary but 
+# responsive callbacks ('component_id' etc. are not strictly necessary but 
 # are included for clarity)
-@app.callback(Output(component_id='image', component_property='src'),
+@app.callback([Output(component_id='image', component_property='src'),
+			Output(component_id='roots', component_property='children')],
 			[Input(component_id='job', component_property='children'),
 			Input(component_id='trigger', component_property='n_intervals'),
 			Input(component_id='button', component_property='n_clicks')
 			])
-def update_redis(job, img, n_clicks):
+def update_redis(job, trigger, n_clicks):
 	if n_clicks is None:
 		raise PreventUpdate
-		return 
+		return '', ''
 
 	# wait while img is generated
 	if q.count > 0:
-		return 
+		return '', ''
 
 	job_current = q.fetch_job('root_job')
 	
 	if not job_current:
-		return
+		return '', ''
 
 	# executes if redis job is complete
 	if job_current.result:
-		img = job_current.result
-		return img
+		img, root_arr = job_current.result
+		roots = ''
+		for i, v in enumerate(root_arr):
+			roots += str(v)
+			if i < len(root_arr) - 1:
+				roots += ', \;'
+
+		# return the root values
+		root_string = ''
+		for char in roots:
+			if char != 'j':
+				root_string += char
+			else:
+				root_string += 'i'
+
+		return img, f"\(  {root_string} \)"
+
+	return '', ''
 
 
 @app.callback(Output(component_id='job', component_property='children'),
@@ -410,6 +443,7 @@ def display_pfinder(equation, rbounds, ibounds, colormap_value, steps_value, met
 
 	return ''
 
+
 @app.callback(Output(component_id='button', component_property='n_clicks'),
 		Input(component_id='image', component_property='src'))
 def reset_clicks(img):
@@ -462,8 +496,10 @@ def display_status(n_clicks):
 	# show program status
 	if n_clicks:
 		return 'Running...'
+
 	else:
-		return ''
+		return 'Roots Found:'
+
 
 
 @app.callback(Output('trigger', 'interval'),
@@ -477,7 +513,7 @@ def disable_interval(img):
 
 # run the app in the cloud
 if __name__ == '__main__':
-	# app.run_server(debug=True, port=8022)
+	# app.run_server(debug=True, port=8005)
 	app.run_server(debug=True, host='0.0.0.0')
 
 

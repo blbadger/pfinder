@@ -20,6 +20,22 @@ def convert_to_binary(arr, cmap):
 	return "data:image/png;base64,{}".format(data)
 
 
+def return_roots(z_array, not_already_at_root):
+	"""
+	"""
+
+	found_root = np.invert(not_already_at_root)
+	z_array = np.around(z_array, 4)
+
+	roots = set()
+	for i in z_array[found_root]:
+		roots.add(i)
+
+	roots_arr = list(roots)
+	roots_arr.sort()
+	return roots_arr
+
+
 def newton(equation, max_iterations, x_range, y_range, res_value, cmap):
 	y, x = np.ogrid[float(y_range[1]): float(y_range[0]): res_value[1]*1j, \
 					float(x_range[0]): float(x_range[1]): res_value[0]*1j]
@@ -47,8 +63,10 @@ def newton(equation, max_iterations, x_range, y_range, res_value, cmap):
 		not_already_at_root = np.invert(found_root) & not_already_at_root
 		
 	arr = iterations_until_rooted
-	return convert_to_binary(arr, cmap)
+	bin_arr = convert_to_binary(arr, cmap)
+	roots = return_roots(z_array, not_already_at_root)
 
+	return bin_arr, roots
 
 
 def newton_optimized(equation, max_iterations, x_range, y_range, res_value, cmap):
@@ -78,8 +96,10 @@ def newton_optimized(equation, max_iterations, x_range, y_range, res_value, cmap
 		not_already_at_root = np.invert(found_root) & not_already_at_root
 		
 	arr = iterations_until_rooted
-	return convert_to_binary(arr, cmap)
+	bin_arr = convert_to_binary(arr, cmap)
+	roots = return_roots(z_array, not_already_at_root)
 
+	return bin_arr, roots
 
 
 def halley(equation, max_iterations, x_range, y_range, res_value, cmap):
@@ -99,7 +119,6 @@ def halley(equation, max_iterations, x_range, y_range, res_value, cmap):
 	diff_string = diff.to_string()
 	double_diff = ComplexCalculate(diff_string, differentiate=True)
 
-
 	for i in range(max_iterations):
 		previous_z_array = z_array
 		z = z_array
@@ -115,8 +134,10 @@ def halley(equation, max_iterations, x_range, y_range, res_value, cmap):
 		not_already_at_root = np.invert(found_root) & not_already_at_root
 
 	arr = iterations_until_rooted
-	return convert_to_binary(arr, cmap)
+	bin_arr = convert_to_binary(arr, cmap)
+	roots = return_roots(z_array, not_already_at_root)
 
+	return bin_arr, roots
 
 
 def halley_optimized(equation, max_iterations, x_range, y_range, res_value, cmap):
@@ -153,8 +174,10 @@ def halley_optimized(equation, max_iterations, x_range, y_range, res_value, cmap
 		not_already_at_root = np.invert(found_root) & not_already_at_root
 
 	arr = iterations_until_rooted
-	return convert_to_binary(arr, cmap)
+	bin_arr = convert_to_binary(arr, cmap)
+	roots = return_roots(z_array, not_already_at_root)
 
+	return bin_arr, roots
 
 
 def secant(equation, max_iterations, x_range, y_range, res_value, cmap):
@@ -169,7 +192,7 @@ def secant(equation, max_iterations, x_range, y_range, res_value, cmap):
 	z_0 = (z_array - zeros)/2 # setting the initial guess to half the distance to the origin from the second guess, which is plotted
 
 	# initializatoin of ComplexCalculate object
-	nondiff = ComplexCalciulate(equation, differentiate=False)
+	nondiff = ComplexCalculate(equation, differentiate=False)
 
 	for i in range(max_iterations):
 		previous_z_array = z_array
@@ -184,9 +207,10 @@ def secant(equation, max_iterations, x_range, y_range, res_value, cmap):
 		not_already_at_root = np.invert(found_root) & not_already_at_root
 		z_0 = z 
 
-
 	arr = iterations_until_rooted
-	return convert_to_binary(arr, cmap)
+	bin_arr = convert_to_binary(arr, cmap)
+
+	return bin_arr, []
 
 
 def secant_optimized(equation, max_iterations, x_range, y_range, res_value, cmap):
@@ -216,6 +240,10 @@ def secant_optimized(equation, max_iterations, x_range, y_range, res_value, cmap
 		not_already_at_root = np.invert(found_root) & not_already_at_root
 		z_0 = z 
 
-
 	arr = iterations_until_rooted
-	return convert_to_binary(arr, cmap)
+	bin_arr = convert_to_binary(arr, cmap)
+	
+	return bin_arr, []
+
+
+
