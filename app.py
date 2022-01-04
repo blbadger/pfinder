@@ -322,12 +322,13 @@ app.layout = html.Div(
 					'textAlign': 'center',
 					'font-family': "Open Sans", # "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;', 
 					'font-weight': 'normal',
-					'margin-top': '1vh',
+					'margin-top': '0.5vh',
 					'margin-left': '0vw',
 					'width': '95vw',
 					'font-size': '2.2rem',
 					'display': 'inline-block',
-					'vertical-align': 'bottom'
+					'vertical-align': 'bottom',
+					'overflow': 'scroll'
 				}),
 
 	html.Img(
