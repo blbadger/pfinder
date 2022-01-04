@@ -92,7 +92,6 @@ class ComplexCalculate:
 		parsed_exp = self.parse()
 		ls = parsed_exp
 
-
 		# differentiate polynomial
 		final_ls = []
 		for i in range(len(ls)-1):
@@ -126,8 +125,6 @@ class ComplexCalculate:
 			# otherwise remove
 			final_ls.pop()
 
-		# add ending tag
-		final_ls.append('end')
 
 		return final_ls
 
@@ -154,8 +151,6 @@ class ComplexCalculate:
 		
 		# change 'start' and 'end' to appropriate markers
 		final_ls[0], final_ls[-1] = '+', '+' 
-
-		point =self.point
 
 		# split parsed polynomial into blocks
 		i = 0
