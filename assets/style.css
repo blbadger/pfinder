@@ -12,7 +12,7 @@
 
 body {
 	margin: 10px;
-	background-color: #1f1f1f;
+	background-color: #1f1f1f !important;
 }
 
 .has-value.Select--single > .Select-control 
@@ -50,13 +50,23 @@ body {
 	color: #A9A9A9;
 }
 
+::-webkit-scrollbar {
+    background-color: #1f1f1f !important;
+}
 
+::-webkit-scrollbar-thumb {
+    background-color: #A9A9A9 !important;
+}
+
+::-webkit-scrollbar-corner {
+    background-color: #1f1f1f !important;
+}
 
 /* Table of contents
 codepen @ criddyp
 https://codepen.io/chriddyp/pen/bWLwgP.css
+Modified by blbadger
 ––––––––––––––––––––––––––––––––––––––––––––––––––
-- Plotly.js
 - Grid
 - Base Styles
 - Typography
@@ -71,23 +81,6 @@ https://codepen.io/chriddyp/pen/bWLwgP.css
 - Clearing
 - Media Queries
 */
-
-/* PLotly.js 
-–––––––––––––––––––––––––––––––––––––––––––––––––– */
-/* plotly.js's modebar's z-index is 1001 by default
- * https://github.com/plotly/plotly.js/blob/7e4d8ab164258f6bd48be56589dacd9bdd7fded2/src/css/_modebar.scss#L5
- * In case a dropdown is above the graph, the dropdown's options
- * will be rendered below the modebar
- * Increase the select option's z-index
- */
-
-/* This was actually not quite right -
-   dropdowns were overlapping each other (edited October 26)
-
-.Select {
-    z-index: 1002;
-}*/
-
 
 /* Grid
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
@@ -304,7 +297,7 @@ select {
   height: 38px;
   padding: 6px 10px; /* The 6px vertically centers text on FF, ignored by Webkit */
   background-color: #1f1f1f;
-  border: 0.5px solid 
+  border: 0.5px solid
   ;
   border-radius: 4px;
   box-shadow: none;
