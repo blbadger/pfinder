@@ -32,7 +32,7 @@ Complex-valued constants and exponents are currrently supported as well, for exa
 
 Complex numbers may be entered with or without real values, ie `(2i)` is acceptable alternative to `(0+2i)`, but all complex or negative contants and exponents must exist in single parentheses.  Note also complex-numbered equation inputs will lead to longer computations than real-valued equations.
 
-Once all desired inputs have been made, press the `CLICK TO RUN` to activate the program.  Expect to wait anywhere from a couple seconds for integer-powered polynomials at low resolution to over a minute for fractional or complex-valued polynomials at 4k resolution. Upon completion of the computation, root values are displayed above the map of convergence of initial values.  Note that root values are not currently displayed for the Secant method, and note also that this field allows for horizontal scrolling but that the scroll bar is practically invisible for iOS versions of Safari.
+Once all desired inputs have been made, press the `CLICK TO RUN` button to activate the program.  Expect to wait anywhere from a couple seconds for integer-powered polynomials at low resolution to over a minute for fractional or complex-valued polynomials at 4k resolution. Upon completion of the computation, root values are displayed above the map of convergence of initial values.  Note that root values are not currently displayed for the Secant method, and note also that this field allows for horizontal scrolling but that the scroll bar is practically invisible for iOS versions of Safari.
 
 ### Behind the scenes
 
