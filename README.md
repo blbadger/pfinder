@@ -10,7 +10,7 @@ After following the link in the upper right hand corner of this page, a short se
 
 ![screenshot](/assets/pfinder_screenshot.png)
 
-in Firefox: use of Chrome or Safari will lead to slightly different aesthetics. The Pfinder was designed for use by Firefox or Chrome and is not optimized for Safari, although it is still usable for that browser.
+Specifically, this is what will be seen for Firefox: use of Chrome or Safari will lead to slightly different aesthetics. The Pfinder was designed for use by Firefox or Chrome and is not optimized for Safari, although it is still usable for that browser.
 
 `Real Bounds` and `Imaginary Bounds` specify the set of initial points in the complex plane.  Real and imaginary components are mapped on the horizontal and vertical axes, respectively: for example, imaginary bounds `-1, 1` results in an image generated for initial values between `-i` (at the bottom of the map) and `i` (top).  Inputs may or may not contain spaces, but must have a single comma `,` between boundary elements, and the first element must be less than the second.
 
