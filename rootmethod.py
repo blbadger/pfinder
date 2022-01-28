@@ -13,15 +13,36 @@ import numexpr as ne
 
 
 def convert_to_binary(arr, cmap):
+	"""
+	Encodes a numpy cmap as a binary array
+
+	Args:
+		arr: np.ogrid[int]
+		cmap: string, color map choice for np.plt.imsave()
+
+	Returns: 
+		str, base64-encoded string for html loading
+
+	"""
 	buf = io.BytesIO()
 	plt.style.use('dark_background')
 	plt.imsave(buf, arr, cmap=cmap, format='png')
 	data = base64.b64encode(buf.getbuffer()).decode("utf8") 
+
 	return "data:image/png;base64,{}".format(data)
 
 
 def return_roots(z_array, not_already_at_root):
 	"""
+	Returns the roots found in z_array
+
+	Args:
+		z_array: np.ogrid[complex] object
+		not_already_at_root: np.opgrid[bool] object
+
+	Returns:
+		roots_arr: arr[complex] of found roots
+
 	"""
 
 	found_root = np.invert(not_already_at_root)
@@ -37,6 +58,23 @@ def return_roots(z_array, not_already_at_root):
 
 
 def newton(equation, max_iterations, x_range, y_range, res_value, cmap):
+	"""
+	Newton's method, compatible with any complex numbered 'equation'
+
+	Args:
+		equation: str
+		max_iterations: int, number of times Newton's method is applied
+		x_range: arr[int], real axis bounds
+		y_range: arr[int], imaginary axis bounds
+		res_value: arr[int], resolution [x_resolution, y_resolution]
+		cmap: str, color map choice for np.plt.imshow()
+
+	Returns:
+		bin_arr: str, base64-encoded binary array
+		roots: arr[complex] of roots found
+
+	"""
+
 	y, x = np.ogrid[float(y_range[1]): float(y_range[0]): res_value[1]*1j, \
 					float(x_range[0]): float(x_range[1]): res_value[0]*1j]
 	z_array = x + y*1j
@@ -70,6 +108,24 @@ def newton(equation, max_iterations, x_range, y_range, res_value, cmap):
 
 
 def newton_optimized(equation, max_iterations, x_range, y_range, res_value, cmap):
+	"""
+	Newton's method using a numexpr-optimized Calculate class.  Only for use
+	with real-valued 'equation'
+
+	Args:
+		equation: str
+		max_iterations: int, number of times Newton's method is applied
+		x_range: arr[int], real axis bounds
+		y_range: arr[int], imaginary axis bounds
+		res_value: arr[int], resolution [x_resolution, y_resolution]
+		cmap: str, color map choice for np.plt.imshow()
+
+	Returns:
+		bin_arr: str, base64-encoded binary array
+		roots: arr[complex] of roots found
+
+	"""
+
 	y, x = np.ogrid[float(y_range[1]): float(y_range[0]): res_value[1]*1j, \
 					float(x_range[0]): float(x_range[1]): res_value[0]*1j]
 	z_array = x + y*1j
@@ -103,6 +159,23 @@ def newton_optimized(equation, max_iterations, x_range, y_range, res_value, cmap
 
 
 def halley(equation, max_iterations, x_range, y_range, res_value, cmap):
+	"""
+	Halley's method, compatible with any complex numbered 'equation' arg
+
+	Args:
+		equation: str
+		max_iterations: int, number of times Newton's method is applied
+		x_range: arr[int], real axis bounds
+		y_range: arr[int], imaginary axis bounds
+		res_value: arr[int], resolution [x_resolution, y_resolution]
+		cmap: str, color map choice for np.plt.imshow()
+
+	Returns:
+		bin_arr: str, base64-encoded binary array
+		roots: arr[complex] of roots found
+
+	"""
+
 	y, x = np.ogrid[float(y_range[1]): float(y_range[0]): res_value[1]*1j, \
 					float(x_range[0]): float(x_range[1]): res_value[0]*1j]
 	z_array = x + y*1j
@@ -141,6 +214,24 @@ def halley(equation, max_iterations, x_range, y_range, res_value, cmap):
 
 
 def halley_optimized(equation, max_iterations, x_range, y_range, res_value, cmap):
+	"""
+	Halley's method using an optimized Calculate class via numexpr.  Only for
+	real-valued 'equation' args.
+
+	Args:
+		equation: str
+		max_iterations: int, number of times Newton's method is applied
+		x_range: arr[int], real axis bounds
+		y_range: arr[int], imaginary axis bounds
+		res_value: arr[int], resolution [x_resolution, y_resolution]
+		cmap: str, color map choice for np.plt.imshow()
+
+	Returns:
+		bin_arr: str, base64-encoded binary array
+		roots: arr[complex] of roots found
+
+	"""
+
 	y, x = np.ogrid[float(y_range[1]): float(y_range[0]): res_value[1]*1j, \
 					float(x_range[0]): float(x_range[1]): res_value[0]*1j]
 	z_array = x + y*1j
@@ -181,6 +272,23 @@ def halley_optimized(equation, max_iterations, x_range, y_range, res_value, cmap
 
 
 def secant(equation, max_iterations, x_range, y_range, res_value, cmap):
+	"""
+	Secant method, compatible with any complex numbered 'equation' arguments
+
+	Args:
+		equation: str
+		max_iterations: int, number of times Newton's method is applied
+		x_range: arr[int], real axis bounds
+		y_range: arr[int], imaginary axis bounds
+		res_value: arr[int], resolution [x_resolution, y_resolution]
+		cmap: str, color map choice for np.plt.imshow()
+
+	Returns:
+		bin_arr: str, base64-encoded binary array
+		roots: arr[complex] of roots found
+
+	"""
+
 	y, x = np.ogrid[float(y_range[1]): float(y_range[0]): res_value[1]*1j, \
 					float(x_range[0]): float(x_range[1]): res_value[0]*1j]
 	z_array = x + y*1j
@@ -214,6 +322,23 @@ def secant(equation, max_iterations, x_range, y_range, res_value, cmap):
 
 
 def secant_optimized(equation, max_iterations, x_range, y_range, res_value, cmap):
+	"""
+	Secant method with optimized Calculate class via numexpr. For use only with
+	real-valued 'equation' arguments.
+
+	Args:
+		equation: str
+		max_iterations: int, number of times Newton's method is applied
+		x_range: arr[int], real axis bounds
+		y_range: arr[int], imaginary axis bounds
+		res_value: arr[int], resolution [x_resolution, y_resolution]
+		cmap: str, color map choice for np.plt.imshow()
+
+	Returns:
+		bin_arr: str, base64-encoded binary array
+		roots: arr[complex] of roots found
+
+	"""
 	y, x = np.ogrid[float(y_range[1]): float(y_range[0]): res_value[1]*1j, \
 					float(x_range[0]): float(x_range[1]): res_value[0]*1j]
 	z_array = x + y*1j
