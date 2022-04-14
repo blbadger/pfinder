@@ -36,9 +36,14 @@ Once all desired inputs have been made, press the `CLICK TO RUN` button to activ
 
 ### Behind the scenes
 
-The Pfinder is a Flask web app running on a gunicorn server using a Plotly Dash interface for front end layout and callbacks, with styling in CSS and HTML.  Array-based computation necessary for root finding and image generation is started by a worker and sent to a Redis server via a Redis Queue message broker, and the Redis server is pinged every two seconds by the app to see if computation is complete.  The worker computation is performed using Numpy, and the resulting array signifying rate of convergence is transformed into an image via Matplotlib and saved to a temporary memory buffer as a bytestring using a base64 binary encoding.
+The Pfinder is a Flask web app running on a gunicorn server using a Plotly Dash interface for front end layout and callbacks, with styling in CSS and HTML.  Array-based computation necessary for root finding and image generation is started by a worker and sent to a Redis server via a Redis Queue message broker, and the Redis server is pinged every two seconds by the app to see if computation is complete.  The worker computation is performed using Numpy, and the resulting array signifying rate of convergence is transformed into an image via Matplotlib and saved to a temporary memory buffer as a bytestring using a base64 binary encoding.  
+
 
 When the Redis job is complete, it is fetched and the bytestring is decoded into a PNG that can be opened in a separate page for maximum resolution.  At the same time, the roots values are fetched and converted to mathematical notation via MathJax and displayed.
+
+For clarity, the callback graph is as follows:
+
+![cover](/assets/pfinder_graph.png)
 
 This system of background Redis processes circumvents the problem of long computation times faced by complex-valued operations at very high resolution.  Heroku, Azure, and most other cloud PaaS providers have hard time limits (30s in this case) for safety and efficiency concerns, meaning that the long computations required to generate high-resolution images of complex-number arrays would simply time out without this system in place.  Timeouts do not occur even when computations run for more than 5 minutes with the current configuration because the app is continually 'active' as it pings the Redis server.  
 
