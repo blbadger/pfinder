@@ -1,3 +1,5 @@
+## *** Sunsetted 11/2022 with the removal of free Heroku PaaS ***
+
 ## Pfinder: Polynomial Root Finder
 
 ### Overview
